@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+// Get both content types
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const allLinks = await getCollection('links', ({ data }) => !data.draft);
+
+// Combine and sort by date, newest first
+type FeedItem = {
+  type: 'post' | 'link';
+  slug: string;
+  data: any;
+  body?: string;
+  render: () => Promise<{ Content: any }>;
+};
+
+const feed: FeedItem[] = [
+  ...allPosts.map((p) => ({ ...p, type: 'post' as const })),
+  ...allLinks.map((l) => ({ ...l, type: 'link' as const })),
+].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Base>
+  <div class="feed">
+    {feed.map(async (item) => {
+      const { Content } = await item.render();
+      const dateStr = item.data.date.toLocaleDateString('en-AU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+
+      if (item.type === 'link') {
+        return (
+          <article class="entry-link">
+            <h2 class="entry-title">
+              <a href={item.data.url} target="_blank" rel="noopener">{item.data.title}</a>
+              <a href={`/links/${item.slug.replace(/\.md$/, '')}`} class="entry-permalink" title="Permalink">✦</a>
+            </h2>
+            <div class="entry-meta">
+              <time datetime={item.data.date.toISOString()}>{dateStr}</time>
+              {item.data.tags.map((tag: string) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+            <div class="entry-body">
+              <Content />
+            </div>
+          </article>
+        );
+      }
+
+      return (
+        <article class="entry-post">
+          <h2 class="entry-title">
+            <a href={`/posts/${item.slug.replace(/\.md$/, '')}`}>{item.data.title}</a>
+          </h2>
+          <div class="entry-meta">
+            <time datetime={item.data.date.toISOString()}>{dateStr}</time>
+            {item.data.tags.map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+          <div class="entry-body">
+            <Content />
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</Base>

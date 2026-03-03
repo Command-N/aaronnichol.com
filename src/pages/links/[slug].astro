@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const links = await getCollection('links');
+  return links.map((link) => ({
+    params: { slug: link.id.replace(/\.md$/, '') },
+    props: { link },
+  }));
+}
+
+const { link } = Astro.props;
+const { Content } = await link.render();
+const dateStr = link.data.date.toLocaleDateString('en-AU', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base title={link.data.title}>
+  <article class="entry-link" style="border-left: none; padding-left: 0;">
+    <header class="post-header">
+      <h1>
+        <a href={link.data.url} target="_blank" rel="noopener" style="color: var(--color-link); text-decoration: none;">
+          {link.data.title} →
+        </a>
+      </h1>
+      <div class="entry-meta">
+        <time datetime={link.data.date.toISOString()}>{dateStr}</time>
+        {link.data.tags.map((tag: string) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    </header>
+    <div class="entry-body post-content">
+      <Content />
+    </div>
+  </article>
+</Base>
