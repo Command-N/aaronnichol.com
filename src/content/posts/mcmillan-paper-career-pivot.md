@@ -3,6 +3,7 @@ title: "What a performance marketer's research paper taught me about career pivo
 date: 2026-03-03
 description: "Damon McMillan went from running a performance marketing firm to publishing agentic AI research that landed on Simon Willison's blog. The paper is good. The positioning is better."
 tags: [ai, career, research]
+draft: true
 ---
 
 I came across a paper this week that I can't stop thinking about — not because of the research itself (though it's solid), but because of the story behind it.
