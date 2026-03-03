@@ -3,6 +3,7 @@ title: "Anthropic's guide to context engineering for AI agents"
 url: "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
 date: 2026-03-02
 tags: [context-engineering, agents]
+draft: true
 ---
 
 Anthropic published their thinking on context engineering — treating the context window as a scarce resource and designing retrieval, memory, and tool integrations around it. The most useful framing: agents should maintain lightweight identifiers (file paths, stored queries, web links) and dynamically load data at runtime rather than pre-processing everything upfront.
