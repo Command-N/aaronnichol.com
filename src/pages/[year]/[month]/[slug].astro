@@ -1,0 +1,68 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const links = await getCollection('links');
+
+  const postPaths = posts.map((post) => {
+    const date = post.data.date;
+    return {
+      params: {
+        year: String(date.getFullYear()),
+        month: String(date.getMonth() + 1).padStart(2, '0'),
+        slug: post.id.replace(/\.md$/, ''),
+      },
+      props: { type: 'post' as const, entry: post },
+    };
+  });
+
+  const linkPaths = links.map((link) => {
+    const date = link.data.date;
+    return {
+      params: {
+        year: String(date.getFullYear()),
+        month: String(date.getMonth() + 1).padStart(2, '0'),
+        slug: link.id.replace(/\.md$/, ''),
+      },
+      props: { type: 'link' as const, entry: link },
+    };
+  });
+
+  return [...postPaths, ...linkPaths];
+}
+
+const { type, entry } = Astro.props;
+const { Content } = await entry.render();
+const dateStr = entry.data.date.toLocaleDateString('en-AU', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base title={entry.data.title} description={type === 'post' ? entry.data.description : undefined}>
+  <article class={type === 'link' ? 'entry-link' : undefined}>
+    <header class="post-header">
+      <h1>
+        {type === 'link' ? (
+          <a href={entry.data.url} target="_blank" rel="noopener" style="color: var(--color-link); text-decoration: none;">
+            {entry.data.title} →
+          </a>
+        ) : (
+          entry.data.title
+        )}
+      </h1>
+      <div class="entry-meta">
+        <time datetime={entry.data.date.toISOString()}>{dateStr}</time>
+        {entry.data.tags.map((tag: string) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    </header>
+    <div class="entry-body post-content">
+      <Content />
+    </div>
+  </article>
+</Base>

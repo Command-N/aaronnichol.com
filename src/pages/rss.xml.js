@@ -5,18 +5,26 @@ export async function GET(context) {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
   const links = await getCollection('links', ({ data }) => !data.draft);
 
+  function entryUrl(entry) {
+    const date = entry.data.date;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const slug = entry.id.replace(/\.md$/, '');
+    return `/${year}/${month}/${slug}/`;
+  }
+
   const allItems = [
     ...posts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description || '',
-      link: `/posts/${post.id.replace(/\.md$/, '')}/`,
+      link: entryUrl(post),
     })),
     ...links.map((link) => ({
       title: `↗ ${link.data.title}`,
       pubDate: link.data.date,
       description: `Link: ${link.data.url}`,
-      link: `/links/${link.id.replace(/\.md$/, '')}/`,
+      link: entryUrl(link),
     })),
   ].sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
 
