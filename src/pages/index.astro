@@ -31,12 +31,17 @@ const feed: FeedItem[] = [
         day: 'numeric',
       });
 
+      const year = item.data.date.getFullYear();
+      const month = String(item.data.date.getMonth() + 1).padStart(2, '0');
+      const slug = item.id.replace(/\.md$/, '');
+      const permalink = `/${year}/${month}/${slug}`;
+
       if (item.type === 'link') {
         return (
           <article class="entry-link">
             <h2 class="entry-title">
               <a href={item.data.url} target="_blank" rel="noopener">{item.data.title}</a>
-              <a href={`/links/${item.slug.replace(/\.md$/, '')}`} class="entry-permalink" title="Permalink">✦</a>
+              <a href={permalink} class="entry-permalink" title="Permalink">✦</a>
             </h2>
             <div class="entry-meta">
               <time datetime={item.data.date.toISOString()}>{dateStr}</time>
@@ -54,7 +59,7 @@ const feed: FeedItem[] = [
       return (
         <article class="entry-post">
           <h2 class="entry-title">
-            <a href={`/posts/${item.slug.replace(/\.md$/, '')}`}>{item.data.title}</a>
+            <a href={permalink}>{item.data.title}</a>
           </h2>
           <div class="entry-meta">
             <time datetime={item.data.date.toISOString()}>{dateStr}</time>
