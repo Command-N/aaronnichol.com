@@ -2,22 +2,22 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-// Get both content types
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 const allLinks = await getCollection('links', ({ data }) => !data.draft);
+const allDrafts = import.meta.env.DEV ? await getCollection('drafts') : [];
 
-// Combine and sort by date, newest first
 type FeedItem = {
   type: 'post' | 'link';
-  slug: string;
+  isDraft: boolean;
+  id: string;
   data: any;
-  body?: string;
   render: () => Promise<{ Content: any }>;
 };
 
 const feed: FeedItem[] = [
-  ...allPosts.map((p) => ({ ...p, type: 'post' as const })),
-  ...allLinks.map((l) => ({ ...l, type: 'link' as const })),
+  ...allPosts.map((p) => ({ ...p, type: 'post' as const, isDraft: false })),
+  ...allLinks.map((l) => ({ ...l, type: 'link' as const, isDraft: false })),
+  ...allDrafts.map((d) => ({ ...d, type: (d.data.url ? 'link' : 'post') as 'post' | 'link', isDraft: true })),
 ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
@@ -41,7 +41,8 @@ const feed: FeedItem[] = [
           <article class="entry-link">
             <h2 class="entry-title">
               <a href={item.data.url} target="_blank" rel="noopener">{item.data.title}</a>
-              <a href={permalink} class="entry-permalink" title="Permalink">✦</a>
+              {!item.isDraft && <a href={permalink} class="entry-permalink" title="Permalink">✦</a>}
+              {item.isDraft && <span class="draft-badge">draft</span>}
             </h2>
             <div class="entry-body">
               <Content />
@@ -56,7 +57,11 @@ const feed: FeedItem[] = [
       return (
         <article class="entry-post">
           <h2 class="entry-title">
-            <a href={permalink}>{item.data.title}</a>
+            {item.isDraft
+              ? <span>{item.data.title}</span>
+              : <a href={permalink}>{item.data.title}</a>
+            }
+            {item.isDraft && <span class="draft-badge">draft</span>}
           </h2>
           <div class="entry-body">
             <Content />

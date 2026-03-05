@@ -359,6 +359,24 @@ body {
 }
 
 /* ============================================
+   Draft badge (dev only)
+   ============================================ */
+
+.draft-badge {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: white;
+  background: var(--color-accent);
+  padding: 0.15em 0.45em;
+  border-radius: 2px;
+  margin-left: var(--space-sm);
+  vertical-align: middle;
+}
+
+/* ============================================
    Archive page
    ============================================ */
 
