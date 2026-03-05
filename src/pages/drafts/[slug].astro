@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const drafts = await getCollection('drafts');
+  return drafts.map((draft) => ({
+    params: { slug: draft.id.replace(/\.md$/, '') },
+    props: { draft },
+  }));
+}
+
+const { draft } = Astro.props;
+const { Content } = await draft.render();
+const isLink = !!draft.data.url;
+const dateStr = draft.data.date.toLocaleDateString('en-AU', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+---
+
+<Base title={`[DRAFT] ${draft.data.title}`}>
+  <article>
+    <header class="post-header">
+      <h1>
+        {isLink ? (
+          <a href={draft.data.url} target="_blank" rel="noopener" style="color: var(--color-link); text-decoration: none;">
+            {draft.data.title} →
+          </a>
+        ) : (
+          draft.data.title
+        )}
+        <span class="draft-badge">draft</span>
+      </h1>
+    </header>
+    <div class="entry-body post-content">
+      <Content />
+    </div>
+    <div class="entry-meta">
+      <time datetime={draft.data.date.toISOString()}>{dateStr}</time>
+    </div>
+  </article>
+</Base>
