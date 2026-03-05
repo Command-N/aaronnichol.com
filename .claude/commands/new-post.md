@@ -10,7 +10,7 @@ Ask the user for:
 Then:
 - Set the date to today
 - Generate a slug from the title: lowercase, words separated by hyphens, no special characters, descriptive but concise
-- Create the file at src/content/posts/[slug].md with this exact frontmatter structure:
+- Create the file at src/content/drafts/[slug].md with this exact frontmatter structure:
 
 ```
 ---
@@ -26,8 +26,8 @@ Post content here.
 
 - Omit the description line entirely if the user doesn't provide one
 - Remove `draft: true` only if the user wants to publish immediately
-- Commit with message "Add post: [title]"
-- Push to GitHub via: export PATH="$PATH:/opt/homebrew/bin" && git ...
+- Do NOT commit or push — drafts stay local only
+- Tell the user the file is saved and they can preview it at http://localhost:4321/drafts
 
 Remind the user that footnotes are supported using standard markdown syntax:
 - Inline: `some text[^1]`
