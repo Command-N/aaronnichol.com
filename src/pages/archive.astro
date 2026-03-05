@@ -50,7 +50,7 @@ const monthNames = [
               {grouped.get(year)!.get(month)!.map((entry) => (
                 <li class="archive-item">
                   <a href={entryUrl(entry)} class={entry.type === 'link' ? 'archive-link-post' : 'archive-post'}>
-                    {entry.data.title}{entry.type === 'link' ? ' →' : ''}
+                    {entry.data.title}
                   </a>
                   <time class="archive-date" datetime={entry.data.date.toISOString()}>
                     {entry.data.date.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}

@@ -23,8 +23,8 @@ const dateStr = draft.data.date.toLocaleDateString('en-AU', {
     <header class="post-header">
       <h1>
         {isLink ? (
-          <a href={draft.data.url} target="_blank" rel="noopener" style="color: var(--color-link); text-decoration: none;">
-            {draft.data.title} →
+          <a href={draft.data.url} target="_blank" rel="noopener">
+            {draft.data.title}
           </a>
         ) : (
           draft.data.title
