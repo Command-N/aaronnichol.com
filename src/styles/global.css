@@ -301,11 +301,20 @@ body {
 
 .post-header h1 {
   font-family: var(--font-sans);
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.025em;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
   margin-bottom: var(--space-sm);
+}
+
+.post-header h1 a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.post-header h1 a:hover {
+  color: var(--color-link);
 }
 
 .post-content {
@@ -431,14 +440,14 @@ body {
 }
 
 .archive-link-post {
-  color: var(--color-link);
+  color: var(--color-text);
   text-decoration: none;
   font-family: var(--font-sans);
   font-size: 0.95rem;
 }
 
 .archive-link-post:hover {
-  text-decoration: underline;
+  color: var(--color-link);
 }
 
 .archive-date {
