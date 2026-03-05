@@ -29,7 +29,7 @@ export async function GET(context) {
   ].sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
 
   return rss({
-    title: 'Your Name', // Change this
+    title: 'Aaron Nichol',
     description: 'Writing about agentic AI, enterprise technology, and building things.', // Change this
     site: context.site,
     items: allItems,
