@@ -160,15 +160,16 @@ body {
 /* Permalink (✦) — appears on both posts and links */
 .entry-permalink {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 1em;
   color: var(--color-text-secondary);
   text-decoration: none;
   margin-left: var(--space-sm);
+  vertical-align: middle;
 }
 
 .entry-permalink::after {
   content: ' permalink';
-  font-size: 0.65rem;
+  font-size: 0.5em;
   opacity: 0;
   transition: opacity 0.15s;
 }
