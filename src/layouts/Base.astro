@@ -4,6 +4,8 @@ interface Props {
   description?: string;
 }
 
+import '../styles/global.css';
+
 const { title, description } = Astro.props;
 const siteTitle = 'Aaron Nichol';
 const pageTitle = title ? `${title} — ${siteTitle}` : siteTitle;
@@ -28,9 +30,6 @@ const pageDescription = description || 'Writing about agentic AI, enterprise tec
   <!-- Favicon - replace with your own -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <style>
-    @import '../styles/global.css';
-  </style>
 </head>
 <body>
   <header class="site-header">
