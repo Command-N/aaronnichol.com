@@ -120,44 +120,28 @@ body {
   border-bottom: 1px solid var(--color-border);
 }
 
-/* --- Full posts --- */
-.entry-post {
-  /* Full posts have no special container styling */
-}
-
-.entry-post .entry-title {
+/* --- Shared entry title styles --- */
+.entry-title {
   font-family: var(--font-sans);
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
   line-height: 1.3;
   letter-spacing: -0.02em;
   margin-bottom: var(--space-sm);
 }
 
+/* Post titles link to their own page */
 .entry-post .entry-title a {
   color: var(--color-text);
   text-decoration: none;
 }
 
-.entry-post .entry-title a:hover {
+.entry-post .entry-title a:not(.entry-permalink):hover {
   color: var(--color-link);
 }
 
-/* --- Link posts (Gruber/Willison style) --- */
-.entry-link {
-}
-
-.entry-link .entry-title {
-  font-family: var(--font-sans);
-  font-size: 1.15rem;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  margin-bottom: var(--space-sm);
-}
-
-/* Link title points OUTWARD to the source */
-.entry-link .entry-title a {
+/* Link titles point outward to the source */
+.entry-link .entry-title a:not(.entry-permalink) {
   color: var(--color-link);
   text-decoration: none;
 }
@@ -173,7 +157,7 @@ body {
   opacity: 0.5;
 }
 
-/* Permalink for link posts (the ★ equivalent) */
+/* Permalink (✦) — appears on both posts and links */
 .entry-permalink {
   font-family: var(--font-sans);
   font-size: 0.75rem;
