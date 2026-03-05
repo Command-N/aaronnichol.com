@@ -51,7 +51,7 @@ const days = [...dayMap.keys()].sort((a, b) => b.localeCompare(a));
                 <article class="entry-link">
                   <h2 class="entry-title">
                     <a href={item.data.url} target="_blank" rel="noopener">{item.data.title}</a>
-                    {!item.isDraft && <a href={permalink} class="entry-permalink" title="Permalink">✦</a>}
+                    <a href={permalink} class="entry-permalink" title="Permalink">✦</a>
                     {item.isDraft && <span class="draft-badge">draft</span>}
                   </h2>
                   <div class="entry-body">
