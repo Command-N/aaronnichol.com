@@ -142,29 +142,22 @@ body {
 
 /* Link titles point outward to the source */
 .entry-link .entry-title a:not(.entry-permalink) {
-  color: var(--color-link);
+  color: var(--color-text);
   text-decoration: none;
 }
 
 .entry-link .entry-title a:not(.entry-permalink):hover {
-  text-decoration: underline;
-}
-
-/* Arrow indicator for external links */
-.entry-link .entry-title a:not(.entry-permalink)::after {
-  content: ' →';
-  font-weight: 400;
-  opacity: 0.5;
+  color: var(--color-link);
 }
 
 /* Permalink (✦) — appears on both posts and links */
 .entry-permalink {
   font-family: var(--font-sans);
-  font-size: 1em;
+  font-size: 0.6em;
   color: var(--color-text-secondary);
   text-decoration: none;
   margin-left: var(--space-sm);
-  vertical-align: middle;
+  vertical-align: 0.2em;
 }
 
 .entry-permalink::after {
