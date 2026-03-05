@@ -153,11 +153,11 @@ body {
 /* Permalink (✦) — appears on both posts and links */
 .entry-permalink {
   font-family: var(--font-sans);
-  font-size: 0.6em;
+  font-size: 0.85em;
   color: var(--color-text-secondary);
   text-decoration: none;
   margin-left: var(--space-sm);
-  vertical-align: 0.2em;
+  vertical-align: 0.1em;
 }
 
 .entry-permalink::after {
