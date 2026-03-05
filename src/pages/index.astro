@@ -43,14 +43,11 @@ const feed: FeedItem[] = [
               <a href={item.data.url} target="_blank" rel="noopener">{item.data.title}</a>
               <a href={permalink} class="entry-permalink" title="Permalink">✦</a>
             </h2>
-            <div class="entry-meta">
-              <time datetime={item.data.date.toISOString()}>{dateStr}</time>
-              {item.data.tags.map((tag: string) => (
-                <span class="tag">{tag}</span>
-              ))}
-            </div>
             <div class="entry-body">
               <Content />
+            </div>
+            <div class="entry-meta">
+              <time datetime={item.data.date.toISOString()}>{dateStr}</time>
             </div>
           </article>
         );
@@ -61,14 +58,11 @@ const feed: FeedItem[] = [
           <h2 class="entry-title">
             <a href={permalink}>{item.data.title}</a>
           </h2>
-          <div class="entry-meta">
-            <time datetime={item.data.date.toISOString()}>{dateStr}</time>
-            {item.data.tags.map((tag: string) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
           <div class="entry-body">
             <Content />
+          </div>
+          <div class="entry-meta">
+            <time datetime={item.data.date.toISOString()}>{dateStr}</time>
           </div>
         </article>
       );

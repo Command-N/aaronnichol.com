@@ -150,12 +150,12 @@ body {
   text-decoration: none;
 }
 
-.entry-link .entry-title a:hover {
+.entry-link .entry-title a:not(.entry-permalink):hover {
   text-decoration: underline;
 }
 
 /* Arrow indicator for external links */
-.entry-link .entry-title a::after {
+.entry-link .entry-title a:not(.entry-permalink)::after {
   content: ' →';
   font-weight: 400;
   opacity: 0.5;
@@ -170,8 +170,20 @@ body {
   margin-left: var(--space-sm);
 }
 
+.entry-permalink::after {
+  content: ' permalink';
+  font-size: 0.65rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
 .entry-permalink:hover {
-  color: var(--color-link);
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.entry-permalink:hover::after {
+  opacity: 1;
 }
 
 /* --- Shared entry styles --- */
@@ -179,7 +191,7 @@ body {
   font-family: var(--font-sans);
   font-size: 0.78rem;
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-md);
+  margin-top: var(--space-md);
 }
 
 .entry-meta time {
@@ -344,6 +356,89 @@ body {
   body {
     padding: var(--space-lg) var(--space-md);
   }
+}
+
+/* ============================================
+   Archive page
+   ============================================ */
+
+.archive-heading {
+  font-family: var(--font-sans);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: var(--space-2xl);
+}
+
+.archive-year {
+  margin-bottom: var(--space-2xl);
+}
+
+.archive-year-heading {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.archive-month {
+  margin-bottom: var(--space-xl);
+}
+
+.archive-month-heading {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-md);
+}
+
+.archive-list {
+  list-style: none;
+  padding: 0;
+}
+
+.archive-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-md);
+  padding: var(--space-xs) 0;
+}
+
+.archive-post {
+  color: var(--color-text);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+
+.archive-post:hover {
+  color: var(--color-link);
+}
+
+.archive-link-post {
+  color: var(--color-link);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+
+.archive-link-post:hover {
+  text-decoration: underline;
+}
+
+.archive-date {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ============================================
