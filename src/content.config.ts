@@ -22,4 +22,15 @@ const links = defineCollection({
   }),
 });
 
-export const collections = { posts, links };
+const drafts = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    url: z.string().url().optional(),
+    date: z.date(),
+    description: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+  }),
+});
+
+export const collections = { posts, links, drafts };

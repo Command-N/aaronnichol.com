@@ -2,75 +2,78 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-// Get both content types
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 const allLinks = await getCollection('links', ({ data }) => !data.draft);
+const allDrafts = import.meta.env.DEV ? await getCollection('drafts') : [];
 
-// Combine and sort by date, newest first
 type FeedItem = {
   type: 'post' | 'link';
-  slug: string;
+  isDraft: boolean;
+  id: string;
   data: any;
-  body?: string;
   render: () => Promise<{ Content: any }>;
 };
 
 const feed: FeedItem[] = [
-  ...allPosts.map((p) => ({ ...p, type: 'post' as const })),
-  ...allLinks.map((l) => ({ ...l, type: 'link' as const })),
+  ...allPosts.map((p) => ({ ...p, type: 'post' as const, isDraft: false })),
+  ...allLinks.map((l) => ({ ...l, type: 'link' as const, isDraft: false })),
+  ...allDrafts.map((d) => ({ ...d, type: (d.data.url ? 'link' : 'post') as 'post' | 'link', isDraft: true })),
 ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Group by calendar day
+const dayMap = new Map<string, FeedItem[]>();
+for (const item of feed) {
+  const d = item.data.date;
+  const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  if (!dayMap.has(key)) dayMap.set(key, []);
+  dayMap.get(key)!.push(item);
+}
+const days = [...dayMap.keys()].sort((a, b) => b.localeCompare(a));
 ---
 
 <Base>
   <div class="feed">
-    {feed.map(async (item) => {
-      const { Content } = await item.render();
-      const dateStr = item.data.date.toLocaleDateString('en-AU', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-
-      const year = item.data.date.getFullYear();
-      const month = String(item.data.date.getMonth() + 1).padStart(2, '0');
-      const slug = item.id.replace(/\.md$/, '');
-      const permalink = `/${year}/${month}/${slug}`;
-
-      if (item.type === 'link') {
-        return (
-          <article class="entry-link">
-            <h2 class="entry-title">
-              <a href={item.data.url} target="_blank" rel="noopener">{item.data.title}</a>
-              <a href={permalink} class="entry-permalink" title="Permalink">✦</a>
-            </h2>
-            <div class="entry-meta">
-              <time datetime={item.data.date.toISOString()}>{dateStr}</time>
-              {item.data.tags.map((tag: string) => (
-                <span class="tag">{tag}</span>
-              ))}
-            </div>
-            <div class="entry-body">
-              <Content />
-            </div>
-          </article>
-        );
-      }
-
+    {days.map((day) => {
+      const dayDate = dayMap.get(day)![0].data.date;
+      const dayStr = dayDate.toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
       return (
-        <article class="entry-post">
-          <h2 class="entry-title">
-            <a href={permalink}>{item.data.title}</a>
-          </h2>
-          <div class="entry-meta">
-            <time datetime={item.data.date.toISOString()}>{dateStr}</time>
-            {item.data.tags.map((tag: string) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
-          <div class="entry-body">
-            <Content />
-          </div>
-        </article>
+        <section class="feed-day">
+          <h2 class="feed-day-heading">{dayStr}</h2>
+          {dayMap.get(day)!.map(async (item) => {
+            const { Content } = await item.render();
+            const slug = item.id.replace(/\.md$/, '');
+            const year = item.data.date.getFullYear();
+            const month = String(item.data.date.getMonth() + 1).padStart(2, '0');
+            const permalink = item.isDraft ? `/drafts/${slug}` : `/${year}/${month}/${slug}`;
+
+            if (item.type === 'link') {
+              return (
+                <article class="entry-link">
+                  <h2 class="entry-title">
+                    <a href={item.data.url} target="_blank" rel="noopener">{item.data.title}</a>
+                    <a href={permalink} class="entry-permalink" title="Permalink">✦</a>
+                    {item.isDraft && <span class="draft-badge">draft</span>}
+                  </h2>
+                  <div class="entry-body">
+                    <Content />
+                  </div>
+                </article>
+              );
+            }
+
+            return (
+              <article class="entry-post">
+                <h2 class="entry-title">
+                  <a href={permalink}>{item.data.title}</a>
+                  {item.isDraft && <span class="draft-badge">draft</span>}
+                </h2>
+                <div class="entry-body">
+                  <Content />
+                </div>
+              </article>
+            );
+          })}
+        </section>
       );
     })}
   </div>
