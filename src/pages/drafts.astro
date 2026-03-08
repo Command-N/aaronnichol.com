@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const drafts = await getCollection('drafts');
+const sorted = drafts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Base title="Drafts">
+  <div class="feed">
+    <h1 style="font-family: var(--font-sans); font-size: 1.1rem; font-weight: 600; margin-bottom: var(--space-xl); color: var(--color-text-secondary);">
+      Drafts ({sorted.length}) — local only, never published
+    </h1>
+    {sorted.length === 0 && (
+      <p style="color: var(--color-text-secondary); font-family: var(--font-sans);">No drafts.</p>
+    )}
+    {sorted.map(async (draft) => {
+      const { Content } = await draft.render();
+      const isLink = !!draft.data.url;
+      const dateStr = draft.data.date.toLocaleDateString('en-AU', {
+        year: 'numeric', month: 'long', day: 'numeric',
+      });
+      return (
+        <article class={isLink ? 'entry-link' : 'entry-post'}>
+          <h2 class="entry-title">
+            {isLink ? (
+              <a href={draft.data.url} target="_blank" rel="noopener">{draft.data.title} →</a>
+            ) : (
+              <span>{draft.data.title}</span>
+            )}
+          </h2>
+          <div class="entry-body"><Content /></div>
+          <div class="entry-meta">
+            <time datetime={draft.data.date.toISOString()}>{dateStr}</time>
+            <span style="margin-left: var(--space-sm); color: var(--color-accent);">draft: {draft.id}</span>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</Base>

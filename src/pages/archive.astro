@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const allLinks = await getCollection('links', ({ data }) => !data.draft);
+
+const allEntries = [
+  ...allPosts.map((p) => ({ ...p, type: 'post' as const })),
+  ...allLinks.map((l) => ({ ...l, type: 'link' as const })),
+].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Group by year then month
+const grouped = new Map<number, Map<number, typeof allEntries>>();
+
+for (const entry of allEntries) {
+  const year = entry.data.date.getFullYear();
+  const month = entry.data.date.getMonth();
+  if (!grouped.has(year)) grouped.set(year, new Map());
+  if (!grouped.get(year)!.has(month)) grouped.get(year)!.set(month, []);
+  grouped.get(year)!.get(month)!.push(entry);
+}
+
+const years = [...grouped.keys()].sort((a, b) => b - a);
+
+function entryUrl(entry: typeof allEntries[number]) {
+  const date = entry.data.date;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const slug = entry.id.replace(/\.md$/, '');
+  return `/${year}/${month}/${slug}`;
+}
+
+const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+---
+
+<Base title="Archive">
+  <div class="archive">
+    <h1 class="archive-heading">Archive</h1>
+    {years.map((year) => (
+      <section class="archive-year">
+        <h2 class="archive-year-heading">{year}</h2>
+        {[...grouped.get(year)!.keys()].sort((a, b) => b - a).map((month) => (
+          <section class="archive-month">
+            <h3 class="archive-month-heading">{monthNames[month]}</h3>
+            <ul class="archive-list">
+              {grouped.get(year)!.get(month)!.map((entry) => (
+                <li class="archive-item">
+                  <a href={entryUrl(entry)} class={entry.type === 'link' ? 'archive-link-post' : 'archive-post'}>
+                    {entry.data.title}
+                  </a>
+                  <time class="archive-date" datetime={entry.data.date.toISOString()}>
+                    {entry.data.date.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
+                  </time>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </section>
+    ))}
+  </div>
+</Base>

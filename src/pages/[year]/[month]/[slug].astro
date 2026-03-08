@@ -47,22 +47,19 @@ const dateStr = entry.data.date.toLocaleDateString('en-AU', {
     <header class="post-header">
       <h1>
         {type === 'link' ? (
-          <a href={entry.data.url} target="_blank" rel="noopener" style="color: var(--color-link); text-decoration: none;">
-            {entry.data.title} →
+          <a href={entry.data.url} target="_blank" rel="noopener">
+            {entry.data.title}
           </a>
         ) : (
           entry.data.title
         )}
       </h1>
-      <div class="entry-meta">
-        <time datetime={entry.data.date.toISOString()}>{dateStr}</time>
-        {entry.data.tags.map((tag: string) => (
-          <span class="tag">{tag}</span>
-        ))}
-      </div>
     </header>
     <div class="entry-body post-content">
       <Content />
+    </div>
+    <div class="entry-meta">
+      <time datetime={entry.data.date.toISOString()}>{dateStr}</time>
     </div>
   </article>
 </Base>

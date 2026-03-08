@@ -9,7 +9,8 @@ import '../styles/global.css';
 const { title, description } = Astro.props;
 const siteTitle = 'Aaron Nichol';
 const pageTitle = title ? `${title} — ${siteTitle}` : siteTitle;
-const pageDescription = description || 'Writing about agentic AI, enterprise technology, and building things.'; // Change this
+const pageDescription = description || 'Writing about agentic AI, enterprise technology, and building things.';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +19,19 @@ const pageDescription = description || 'Writing about agentic AI, enterprise tec
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
   <meta name="description" content={pageDescription} />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content={siteTitle} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:type" content={title ? 'article' : 'website'} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={pageDescription} />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,7 +49,7 @@ const pageDescription = description || 'Writing about agentic AI, enterprise tec
   <header class="site-header">
     <h1><a href="/">{siteTitle}</a></h1>
     <nav class="site-nav">
-      <a href="/">Home</a>
+      <a href="/archive">Archive</a>
       <a href="/about">About</a>
       <a href="/rss.xml">RSS</a>
     </nav>

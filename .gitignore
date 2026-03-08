@@ -2,3 +2,10 @@ node_modules/
 dist/
 .astro/
 .DS_Store
+
+# Local drafts — never pushed to GitHub
+src/content/drafts/*
+!src/content/drafts/.gitkeep
+
+# Claude project instructions — local only
+CLAUDE.md
