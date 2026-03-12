@@ -9,6 +9,6 @@ Demitri Spanos, in the first of a promised series of conversations with Casey Mu
 
 The hundreds of billions flowing into 'transforming the workforce with AI' is either a bet on fewer jobs, a bet that AI lifts revenues, or both.
 
-The smart knowledge workers I know aren't waiting for the outcome. They anticipate disruption and are trying to get ahead of it. I've seen a few reactions: using AI to build apps and diversify income, encapsulating experience into AI agent skills and marketing themselves as fractional hires, publishing first-time research papers on AI, and open sourcing AI-adjacent dev tools to establish credibility.
+The smart knowledge workers I know aren't waiting for the outcome. They anticipate disruption and are trying to get ahead of it. I've seen a few reactions: using AI to build apps and diversify income, encapsulating experience into AI agent skills and marketing themselves as fractional hires, publishing first-time research papers on AI, and open sourcing AI-adjacent dev tools to establish credibility. No carpenters—yet.
 
 Maybe this time we're wise enough to know that when big cheques are written, they will get cashed.
