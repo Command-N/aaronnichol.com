@@ -6,6 +6,7 @@
 :root {
   /* Colors */
   --color-bg: #161616;
+  --color-logo: #ebebea;
   --color-text: #c4c0bb;
   --color-text-secondary: #78746f;
   --color-text-muted: #a09c97;
@@ -56,6 +57,7 @@
 
 html {
   font-size: 16px;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -94,17 +96,28 @@ header, nav, footer, h1, h2, h3, h4,
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-normal);
   letter-spacing: -0.02em;
+  padding-left: var(--space-sm);
   padding-bottom: var(--space-lg);
-  border-bottom: 1px solid var(--color-border);
+  position: relative;
+}
+
+.site-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 1px;
+  background: var(--color-border);
 }
 
 .site-header h1 a {
-  color: var(--color-text);
+  color: var(--color-logo);
   text-decoration: none;
 }
 
 .site-header h1 a:hover {
-  color: var(--color-text);
+  color: var(--color-logo);
 }
 
 .site-nav {
@@ -153,13 +166,14 @@ header, nav, footer, h1, h2, h3, h4,
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
   letter-spacing: -0.03em;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 
 /* Post titles link to their own page */
 .entry-post .entry-title a,
+.entry-link .entry-title a:not(.entry-permalink),
 .post-header h1 a {
-  color: var(--color-text);
+  color: var(--color-logo);
   text-decoration: none;
 }
 
@@ -170,11 +184,6 @@ header, nav, footer, h1, h2, h3, h4,
 }
 
 /* Link titles point outward to the source */
-.entry-link .entry-title a:not(.entry-permalink) {
-  color: var(--color-text);
-  text-decoration: none;
-}
-
 .entry-link .entry-title a:not(.entry-permalink):hover {
   background-color: var(--color-highlight);
   color: var(--color-text);
