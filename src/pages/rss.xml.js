@@ -1,4 +1,3 @@
-import rss from '@astrojs/rss';
 import { getCollection, render } from 'astro:content';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 
@@ -21,31 +20,70 @@ export async function GET(context) {
     return await container.renderToString(Content);
   }
 
-  const postItems = await Promise.all(posts.map(async (post) => ({
-    title: post.data.title,
-    pubDate: post.data.date,
-    description: post.data.description || '',
-    link: permalinkUrl(post),
-    content: await renderContent(post),
-  })));
+  function escapeAttr(str) {
+    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  }
 
-  const linkItems = await Promise.all(links.map(async (link) => ({
-    title: link.data.title,
-    pubDate: link.data.date,
-    link: permalinkUrl(link),
-    customData: `<atom:link rel="related" type="text/html" href="${link.data.url}"/>`,
-    content: await renderContent(link),
-  })));
+  function escapeXml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
 
-  const allItems = [...postItems, ...linkItems]
-    .sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
+  const allEntries = [
+    ...posts.map(p => ({ ...p, type: 'post' })),
+    ...links.map(l => ({ ...l, type: 'link' })),
+  ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-  return rss({
-    title: 'Aaron Nichol',
-    description: 'Writing about agentic AI, enterprise technology, and building things.',
-    site: context.site,
-    items: allItems,
-    xmlns: { atom: 'http://www.w3.org/2005/Atom' },
-    customData: `<language>en-au</language>`,
+  const updated = allEntries.length > 0
+    ? allEntries[0].data.date.toISOString()
+    : new Date().toISOString();
+
+  const items = await Promise.all(allEntries.map(async (entry) => {
+    const permalink = permalinkUrl(entry);
+    const content = await renderContent(entry);
+    const dateStr = entry.data.date.toISOString();
+    const title = escapeXml(entry.data.title);
+
+    if (entry.type === 'link') {
+      return `
+  <entry>
+    <title>${title}</title>
+    <link href="${escapeAttr(entry.data.url)}" rel="alternate" type="text/html"/>
+    <link href="${escapeAttr(permalink)}" rel="related" type="text/html"/>
+    <id>${escapeXml(permalink)}</id>
+    <published>${dateStr}</published>
+    <updated>${dateStr}</updated>
+    <content type="html"><![CDATA[${content}]]></content>
+  </entry>`;
+    }
+
+    return `
+  <entry>
+    <title>${title}</title>
+    <link href="${escapeAttr(permalink)}" rel="alternate" type="text/html"/>
+    <id>${escapeXml(permalink)}</id>
+    <published>${dateStr}</published>
+    <updated>${dateStr}</updated>
+    <content type="html"><![CDATA[${content}]]></content>
+  </entry>`;
+  }));
+
+  const feed = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Aaron Nichol</title>
+  <subtitle>Writing about agentic AI, enterprise technology, and building things.</subtitle>
+  <link href="${escapeAttr(new URL('rss.xml', context.site).toString())}" rel="self" type="application/atom+xml"/>
+  <link href="${escapeAttr(context.site.toString())}" rel="alternate" type="text/html"/>
+  <id>${escapeXml(context.site.toString())}</id>
+  <updated>${updated}</updated>
+  <author>
+    <name>Aaron Nichol</name>
+  </author>
+  <language>en-au</language>${items.join('')}
+</feed>`;
+
+  return new Response(feed, {
+    headers: {
+      'Content-Type': 'application/atom+xml; charset=utf-8',
+    },
   });
 }
