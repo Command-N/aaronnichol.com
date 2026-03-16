@@ -50,8 +50,8 @@ export async function GET(context) {
       return `
   <entry>
     <title>${title}</title>
-    <link href="${escapeAttr(entry.data.url)}" rel="alternate" type="text/html"/>
-    <link href="${escapeAttr(permalink)}" rel="related" type="text/html"/>
+    <link href="${escapeAttr(permalink)}" rel="alternate" type="text/html"/>
+    <link href="${escapeAttr(entry.data.url)}" rel="related" type="text/html"/>
     <id>${escapeXml(tagId)}</id>
     <published>${dateStr}</published>
     <updated>${dateStr}</updated>
