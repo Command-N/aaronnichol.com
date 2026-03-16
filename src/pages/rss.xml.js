@@ -44,12 +44,15 @@ export async function GET(context) {
     const title = escapeXml(entry.data.title);
 
     if (entry.type === 'link') {
+      const year = entry.data.date.getFullYear();
+      const slug = entry.id.replace(/\.md$/, '');
+      const tagId = `tag:aaronnichol.com,${year}:${slug}`;
       return `
   <entry>
     <title>${title}</title>
     <link href="${escapeAttr(entry.data.url)}" rel="alternate" type="text/html"/>
     <link href="${escapeAttr(permalink)}" rel="related" type="text/html"/>
-    <id>${escapeXml(permalink)}</id>
+    <id>${escapeXml(tagId)}</id>
     <published>${dateStr}</published>
     <updated>${dateStr}</updated>
     <content type="html"><![CDATA[${content}]]></content>
