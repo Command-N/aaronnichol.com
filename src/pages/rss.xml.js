@@ -32,7 +32,8 @@ export async function GET(context) {
   const linkItems = await Promise.all(links.map(async (link) => ({
     title: link.data.title,
     pubDate: link.data.date,
-    link: link.data.url,
+    link: permalinkUrl(link),
+    customData: `<atom:link rel="related" type="text/html" href="${link.data.url}"/>`,
     content: await renderContent(link),
   })));
 
@@ -44,6 +45,7 @@ export async function GET(context) {
     description: 'Writing about agentic AI, enterprise technology, and building things.',
     site: context.site,
     items: allItems,
+    xmlns: { atom: 'http://www.w3.org/2005/Atom' },
     customData: `<language>en-au</language>`,
   });
 }
