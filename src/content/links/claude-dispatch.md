@@ -2,7 +2,7 @@
 title: Claude Dispatch
 url: https://support.claude.com/en/articles/13947068-assign-tasks-to-claude-from-anywhere-in-cowork
 date: 2026-03-22
-tags:
+tags: []
 ---
 I first saw this when it popped up in the Claude sidebar on iOS a few days ago.
 
