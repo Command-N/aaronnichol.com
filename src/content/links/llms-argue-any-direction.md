@@ -1,7 +1,7 @@
 ---
 title: LLMs can argue any direction
 url: https://x.com/karpathy/status/2037921699824607591?s=20
-date: 2026-03-30
+date: 2026-03-30T20:21:49+11:00
 tags: []
 ---
 Andrej Karpathy on X:
