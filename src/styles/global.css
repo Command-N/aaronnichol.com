@@ -7,9 +7,9 @@
   /* Colors */
   --color-bg: #161616;
   --color-logo: #ebebea;
-  --color-text: #c4c0bb;
+  --color-text: #e8e4de;
   --color-text-secondary: #78746f;
-  --color-text-muted: #a09c97;
+  --color-text-muted: #c0bbb5;
   --color-link: #d97706;
   --color-link-hover: #f59e0b;
   --color-border: #2e2c2a;
@@ -56,7 +56,7 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 17px;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
