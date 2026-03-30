@@ -1,6 +1,6 @@
 ---
 title: Workstation Exposure Tool
-date: 2026-03-30
+date: 2026-03-30T09:00:00
 ---
 Last week's [LiteLLM supply chain attack](https://futuresearch.ai/blog/litellm-pypi-supply-chain-attack/) got me wondering how exposed I would have been if I'd installed the compromised package.
 
