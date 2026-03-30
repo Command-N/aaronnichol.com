@@ -4,7 +4,7 @@ date: 2026-03-30T11:00:00+11:00
 ---
 Last week's [LiteLLM supply chain attack](https://futuresearch.ai/blog/litellm-pypi-supply-chain-attack/) got me wondering how exposed I would have been if I'd installed the compromised package.
 
-I had Claude build me a MacOS-specific shell tool to check. I've called it the Workstation Exposure Tool and [published](https://github.com/Command-N/workstation-exposure-audit) it for anyone to download and use.
+I had Claude build me a macOS-specific shell tool to check. I've called it the Workstation Exposure Tool and [published](https://github.com/Command-N/workstation-exposure-audit) it for anyone to download and use.
 
 I wanted something that I could run locally without installing any packages, making network calls, reading credentials to memory, or sending sensitive data externally (for example, asking an LLM to look for exposed credentials across my machine).
 
