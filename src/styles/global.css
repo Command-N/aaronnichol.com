@@ -152,7 +152,7 @@ header, nav, footer, h1, h2, h3, h4,
 .feed-day {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: var(--space-3xl);
 }
 
 .feed-day-heading {
