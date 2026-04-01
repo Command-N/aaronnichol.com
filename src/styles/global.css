@@ -46,6 +46,7 @@
   --space-lg: 1.5rem;
   --space-xl: 2.5rem;
   --space-2xl: 5rem;
+  --space-3xl: 6.5rem;  /* ~110px */
 }
 
 /* Reset */
@@ -145,7 +146,7 @@ header, nav, footer, h1, h2, h3, h4,
 .feed {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
+  gap: var(--space-3xl);
 }
 
 .feed-day {
