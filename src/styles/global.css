@@ -232,6 +232,11 @@ header, nav, footer, h1, h2, h3, h4,
   opacity: 0.5;
 }
 
+/* font-size set here so p, blockquote, li inherit and scale together on mobile */
+.entry-body {
+  font-size: 1rem;
+}
+
 .entry-body p {
   margin-bottom: var(--space-md);
 }
@@ -260,7 +265,7 @@ header, nav, footer, h1, h2, h3, h4,
 
 .entry-body code {
   font-family: var(--font-mono);
-  font-size: var(--font-size-md);
+  font-size: 0.7em;
   background: var(--color-code-bg);
   padding: 0.15em 0.35em;
   border-radius: 3px;
@@ -272,7 +277,7 @@ header, nav, footer, h1, h2, h3, h4,
   border-radius: 4px;
   overflow-x: auto;
   margin: var(--space-lg) 0;
-  font-size: var(--font-size-md);
+  font-size: 0.7em;
   line-height: 1.5;
 }
 
@@ -356,12 +361,12 @@ header, nav, footer, h1, h2, h3, h4,
    ============================================ */
 
 @media (max-width: 700px) {
-  html {
-    font-size: 19px;
-  }
-
   body {
     padding: var(--space-lg) var(--space-md);
+  }
+
+  .entry-body {
+    font-size: 18px;
   }
 }
 
