@@ -20,7 +20,7 @@
   /* Typography */
   --font-logo: 'Bodoni 72', 'Bodoni MT', 'Book Antiqua', Georgia, serif;
   --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-body: Avenir, 'Avenir Next', Verdana, Arial, sans-serif;
+  --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
 
   /* Font weights */
