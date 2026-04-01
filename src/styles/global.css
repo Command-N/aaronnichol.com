@@ -5,11 +5,11 @@
 
 :root {
   /* Colors */
-  --color-bg: #161616;
+  --color-bg: #000000;
   --color-logo: #ebebea;
-  --color-text: #e8e4de;
+  --color-text: #fbf9f6;
   --color-text-secondary: #78746f;
-  --color-text-muted: #c0bbb5;
+  --color-text-muted: #c1c1c1;
   --color-link: #d97706;
   --color-link-hover: #f59e0b;
   --color-border: #2e2c2a;
@@ -20,7 +20,7 @@
   /* Typography */
   --font-logo: 'Bodoni 72', 'Bodoni MT', 'Book Antiqua', Georgia, serif;
   --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-body: Avenir, 'Avenir Next', Verdana, Arial, sans-serif;
+  --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
 
   /* Font weights */
@@ -46,6 +46,7 @@
   --space-lg: 1.5rem;
   --space-xl: 2.5rem;
   --space-2xl: 5rem;
+  --space-3xl: 6.5rem;  /* ~110px */
 }
 
 /* Reset */
@@ -67,7 +68,7 @@ body {
   font-size: var(--font-size-base);
   color: var(--color-text);
   background-color: var(--color-bg);
-  line-height: 1.65;
+  line-height: 1.75;
   max-width: var(--content-width);
   margin: 0 auto;
   padding: var(--space-xl) var(--space-lg) var(--space-2xl);
@@ -145,13 +146,13 @@ header, nav, footer, h1, h2, h3, h4,
 .feed {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
+  gap: var(--space-3xl);
 }
 
 .feed-day {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: var(--space-3xl);
 }
 
 .feed-day-heading {
@@ -232,6 +233,11 @@ header, nav, footer, h1, h2, h3, h4,
   opacity: 0.5;
 }
 
+/* font-size set here so p, blockquote, li inherit and scale together on mobile */
+.entry-body {
+  font-size: 1rem;
+}
+
 .entry-body p {
   margin-bottom: var(--space-md);
 }
@@ -260,7 +266,7 @@ header, nav, footer, h1, h2, h3, h4,
 
 .entry-body code {
   font-family: var(--font-mono);
-  font-size: var(--font-size-md);
+  font-size: 0.7em;
   background: var(--color-code-bg);
   padding: 0.15em 0.35em;
   border-radius: 3px;
@@ -272,7 +278,7 @@ header, nav, footer, h1, h2, h3, h4,
   border-radius: 4px;
   overflow-x: auto;
   margin: var(--space-lg) 0;
-  font-size: var(--font-size-md);
+  font-size: 0.7em;
   line-height: 1.5;
 }
 
@@ -356,12 +362,12 @@ header, nav, footer, h1, h2, h3, h4,
    ============================================ */
 
 @media (max-width: 700px) {
-  html {
-    font-size: 16px;
-  }
-
   body {
     padding: var(--space-lg) var(--space-md);
+  }
+
+  .entry-body {
+    font-size: 18px;
   }
 }
 
