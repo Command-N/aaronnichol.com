@@ -67,7 +67,7 @@ body {
   font-size: var(--font-size-base);
   color: var(--color-text);
   background-color: var(--color-bg);
-  line-height: 1.65;
+  line-height: 1.75;
   max-width: var(--content-width);
   margin: 0 auto;
   padding: var(--space-xl) var(--space-lg) var(--space-2xl);
@@ -357,7 +357,7 @@ header, nav, footer, h1, h2, h3, h4,
 
 @media (max-width: 700px) {
   html {
-    font-size: 16px;
+    font-size: 19px;
   }
 
   body {
