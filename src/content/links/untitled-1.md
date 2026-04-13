@@ -1,7 +1,7 @@
 ---
 title: "Golden tickets"
 date: 2026-04-13
-link: "https://www.presentandcorrect.com/blogs/blog/golden-tickets"
+url: "https://www.presentandcorrect.com/blogs/blog/golden-tickets"
 ---
 
 Utterly delightful collection of weekly Milwaukee bus tickets from the 1950s. 
