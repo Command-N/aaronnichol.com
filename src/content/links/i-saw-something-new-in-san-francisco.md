@@ -8,6 +8,8 @@ Ezra Klein, writing for the New York Times (gift link provided), surfaces some p
 
 >What makes A.I. truly persuasive isn't that it praises our ideas or insights, it's that it restates and extends them in a more compelling form than we initially offered, and does so while reflecting a polished image of ourselves back at us.
 
+<!--more-->
+
 Part of what I think makes Claude compelling—and concerning—is the subtle and covert form of sycophancy it delivers. It's a much more refined implementation than we first saw with GPT 4o, making you *feel* smart without saying so.
 
 I asked Claude to comb through previous chats and identify all the tools it uses to keep me engaged. After some back and forth analysis here is how Claude described what it does:

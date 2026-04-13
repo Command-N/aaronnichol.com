@@ -12,6 +12,8 @@ From the [docs](https://code.claude.com/docs/en/code-review):
 
 >Code Review is billed based on token usage. Reviews average $15-25, scaling with PR size, codebase complexity, and how many issues require verification.
 
+<!--more-->
+
 $15-25 per review might seem expensive, especially for individuals (assuming this expands to all users soon) and small teams, but for an enterprise that stakes their reputation on software, this is a small price to pay.
 
 Code review is a painful bottleneck for any software team. I've seen PR reviews sit for *days* because a senior engineer familiar with the code base is sick or too busy. A 20 minute AI review that can run anytime will help teams move faster *and* give senior engineers more time to focus on design and architecture.
