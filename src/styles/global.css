@@ -146,23 +146,31 @@ header, nav, footer, h1, h2, h3, h4,
 .feed {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3xl);
+  gap: var(--space-xl);
 }
 
 .feed-day {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: 0;
+}
+
+.feed-day:not(:first-child) {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-xl);
 }
 
 .feed-day > article + article {
-  margin-top: calc(var(--space-3xl) - var(--space-xl));
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
 }
 
 .feed-day-heading {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
+  margin-bottom: var(--space-xl);
 }
 
 /* --- Shared entry title styles --- */
@@ -240,6 +248,21 @@ header, nav, footer, h1, h2, h3, h4,
 /* font-size set here so p, blockquote, li inherit and scale together on mobile */
 .entry-body {
   font-size: 1rem;
+}
+
+.continue-reading {
+  margin-top: var(--space-md);
+}
+
+.continue-reading a {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.continue-reading a:hover {
+  color: var(--color-link);
+  text-decoration: underline;
 }
 
 .entry-body p {

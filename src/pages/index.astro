@@ -1,15 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
 
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 const allLinks = await getCollection('links', ({ data }) => !data.draft);
 const allDrafts = import.meta.env.DEV ? await getCollection('drafts') : [];
 
+const MORE_MARKER = '<!--more-->';
+
+const md = unified().use(remarkParse).use(remarkRehype).use(rehypeStringify);
+
+async function renderMarkdown(source: string): Promise<string> {
+  const result = await md.process(source);
+  return String(result);
+}
+
 type FeedItem = {
   type: 'post' | 'link';
   isDraft: boolean;
   id: string;
+  body?: string;
   data: any;
   render: () => Promise<{ Content: any }>;
 };
@@ -46,6 +60,11 @@ const days = [...dayMap.keys()].sort((a, b) => b.localeCompare(a));
             const month = String(item.data.date.getMonth() + 1).padStart(2, '0');
             const permalink = item.isDraft ? `/drafts/${slug}` : `/${year}/${month}/${slug}`;
 
+            const hasMore = item.body?.includes(MORE_MARKER) ?? false;
+            const previewHtml = hasMore
+              ? await renderMarkdown(item.body!.split(MORE_MARKER)[0].trim())
+              : '';
+
             if (item.type === 'link') {
               return (
                 <article class="entry-link">
@@ -54,9 +73,16 @@ const days = [...dayMap.keys()].sort((a, b) => b.localeCompare(a));
                     <a href={permalink} class="entry-permalink" title="Permalink">✦</a>
                     {item.isDraft && <span class="draft-badge">draft</span>}
                   </h2>
-                  <div class="entry-body">
-                    <Content />
-                  </div>
+                  {hasMore ? (
+                    <div class="entry-body">
+                      <Fragment set:html={previewHtml} />
+                      <p class="continue-reading"><a href={permalink}>Continue reading →</a></p>
+                    </div>
+                  ) : (
+                    <div class="entry-body">
+                      <Content />
+                    </div>
+                  )}
                 </article>
               );
             }
@@ -67,9 +93,16 @@ const days = [...dayMap.keys()].sort((a, b) => b.localeCompare(a));
                   <a href={permalink}>{item.data.title}</a>
                   {item.isDraft && <span class="draft-badge">draft</span>}
                 </h2>
-                <div class="entry-body">
-                  <Content />
-                </div>
+                {hasMore ? (
+                  <div class="entry-body">
+                    <Fragment set:html={previewHtml} />
+                    <p class="continue-reading"><a href={permalink}>Continue reading →</a></p>
+                  </div>
+                ) : (
+                  <div class="entry-body">
+                    <Content />
+                  </div>
+                )}
               </article>
             );
           })}
