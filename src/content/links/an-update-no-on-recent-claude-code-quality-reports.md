@@ -5,8 +5,6 @@ url: "https://www.anthropic.com/engineering/april-23-postmortem"
 writer-id: 8DA78E52-52F9-4AC0-A049-947D2158FF8D
 ---
 
-# An update on recent Claude Code quality reports
-
 Anthropic came out today with a detailed breakdown of a few recent Claude Code issues that degraded its intelligence and made it feel lazy to many: 
 
 > Over the past month, we’ve been looking into reports that Claude’s responses have worsened for some users. We’ve traced these reports to three separate changes that affected Claude Code, the Claude Agent SDK, and Claude Cowork. The API was not impacted.
