@@ -361,6 +361,13 @@ header, nav, footer, h1, h2, h3, h4,
   padding: var(--space-sm);
 }
 
+/* Portrait figures (tall/phone screenshots) — centred at half column width */
+.entry-body figure.portrait {
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .entry-body figcaption {
   font-family: var(--font-sans);
   font-size: var(--font-size-lg);

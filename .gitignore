@@ -9,3 +9,6 @@ src/content/drafts/*
 
 # Claude project instructions — local only
 CLAUDE.md
+
+# Internal docs — local only
+docs/

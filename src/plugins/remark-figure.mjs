@@ -7,6 +7,9 @@
  * Only transforms images that are the sole content of a paragraph (i.e. on
  * their own line, not inline with text). Images without alt text still get
  * wrapped in <figure> for consistent styling, but skip the <figcaption>.
+ *
+ * Portrait variant: ![Caption](url "portrait") → <figure class="portrait">
+ * Displayed centred at half column width, suited to tall/phone screenshots.
  */
 
 function escapeHtml(str) {
@@ -30,11 +33,10 @@ export function remarkFigure() {
         const { url, alt, title } = node.children[0];
         const src = escapeHtml(url);
         const escapedAlt = alt ? escapeHtml(alt) : '';
+        const isPortrait = title === 'portrait';
 
-        let html = '<figure>';
-        html += `<img src="${src}" alt="${escapedAlt}"`;
-        if (title) html += ` title="${escapeHtml(title)}"`;
-        html += ' />';
+        let html = isPortrait ? '<figure class="portrait">' : '<figure>';
+        html += `<img src="${src}" alt="${escapedAlt}" />`;
         if (alt) {
           html += `<figcaption>${escapedAlt}</figcaption>`;
         }
