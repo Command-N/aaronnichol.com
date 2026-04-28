@@ -10,8 +10,6 @@ GitHub company news blog earlier this week:
 
 This shouldn't come as a surprise to anyone paying attention, but it's still going to be very uncomfortable for businesses and enterprises that have based their budgets on heavily subsidised per-seat plans which will soon be a lot less useful.
 
-<!—more—>
-
 > Instead of counting premium requests, every Copilot plan will include a monthly allotment of GitHub AI Credits, with the option for paid plans to purchase additional usage. Usage will be calculated based on token consumption, including input, output, and cached tokens, using the listed API rates for each model.
 
 I'm not a fan of these credit models. They're akin to buying chips at a casino. Of course, this works for casinos, and it might work here, but AI compute isn't (or at least shouldn't be) gambling.
