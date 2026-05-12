@@ -1,5 +1,5 @@
 ---
-title: "Ask your LLM to work itself out of a job"
+title: "Ask Your LLM to Work Itself Out of a Job"
 date: 2026-05-10
 ---
 
