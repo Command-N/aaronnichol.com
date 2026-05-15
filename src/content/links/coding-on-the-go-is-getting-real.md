@@ -3,7 +3,6 @@ title: "Coding on the Go Is Getting Real"
 date: 2026-05-15
 url: "https://openai.com/index/work-with-codex-from-anywhere/"
 ---
-
 OpenAI news:
 
 > Codex is now in the ChatGPT mobile app so you can stay in the loop from anywhere while Codex gets work done across your laptops, devboxes, or remote environments.
