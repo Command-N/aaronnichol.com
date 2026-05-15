@@ -4,6 +4,8 @@ date: 2026-05-15
 url: "https://openai.com/index/work-with-codex-from-anywhere/"
 ---
 
+OpenAI news:
+
 > Codex is now in the ChatGPT mobile app so you can stay in the loop from anywhere while Codex gets work done across your laptops, devboxes, or remote environments.
 >
 > As agents take on longer-running work, a new rhythm for collaboration is emerging. To keep work moving, you need to be able to easily answer a question, review what Codex found, change direction, approve what comes next, or add a new idea.
