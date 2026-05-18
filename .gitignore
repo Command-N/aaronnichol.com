@@ -9,6 +9,10 @@ src/content/drafts/*
 
 # Claude project instructions — local only
 CLAUDE.md
+AGENTS.md
+
+# Obsidian workspace settings — local only
+.obsidian/
 
 # Internal docs — local only
 docs/
