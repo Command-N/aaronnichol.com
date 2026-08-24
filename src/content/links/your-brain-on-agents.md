@@ -20,4 +20,4 @@ Nor is it remotely economical to do so today. Agent harnesses at Yegge’s scale
 > 
 > In order to sustain my pace of development, I pay for currently twelve extra Max accounts, in addition to my personal one.
 
-Only!
+Only! This is your brain on agents. 
