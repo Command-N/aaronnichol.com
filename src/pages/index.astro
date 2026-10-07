@@ -1,7 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { marked } from 'marked';
+import { Marked, Renderer } from 'marked';
+
+// Excerpts use Marked rather than Astro's rehype table wrapper.
+const marked = new Marked({
+  renderer: {
+    table(token) {
+      return `<div class="table-wrapper">${Renderer.prototype.table.call(this, token)}</div>`;
+    },
+  },
+});
 
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 const allLinks = await getCollection('links', ({ data }) => !data.draft);

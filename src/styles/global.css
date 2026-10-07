@@ -384,6 +384,7 @@ header, nav, footer, h1, h2, h3, h4,
 
 /* Tables */
 .entry-body .table-wrapper {
+  max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin: var(--space-lg) 0;
@@ -393,6 +394,7 @@ header, nav, footer, h1, h2, h3, h4,
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9em;
+  line-height: 1.5;
 }
 
 .entry-body th {
@@ -402,7 +404,7 @@ header, nav, footer, h1, h2, h3, h4,
   padding-left: 0;
   border-bottom: 2px solid var(--color-text-secondary);
   color: var(--color-text);
-  white-space: nowrap;
+  vertical-align: bottom;
 }
 
 .entry-body td {
@@ -410,6 +412,8 @@ header, nav, footer, h1, h2, h3, h4,
   padding-left: 0;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-text);
+  white-space: nowrap;
+  vertical-align: top;
 }
 
 .entry-body tbody tr:last-child td {
