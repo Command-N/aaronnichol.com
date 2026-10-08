@@ -13,9 +13,17 @@ This package builds static preview content without Cloudflare credentials, uploa
 - Environment secret: `CLOUDFLARE_PREVIEW_EDIT_TOKEN`, a user token with only Account → Cloudflare Pages → Edit for the specific preview account. GitHub metadata confirms it is saved; the author confirmed that exact scope. MCP cannot independently read token policies and no secret value was retrieved.
 - Repository variables: `WRITER_PREVIEW_AUTOMATION_ENABLED=false`, `WRITER_PREVIEW_DELETION_ENABLED=false`.
 
-Stage B resources/ref restrictions and saved-secret metadata are verified; token scope is confirmed by the author. Stage C installation approval remains pending. Runtime execution, Environment denial and provider deletion have not been demonstrated. Merging registers manual workflows; automatic jobs remain disabled. Manual cleanup defaults to dry run. Manual deletion requires one explicit branch and persists recovery evidence before mutation.
+Stage B setup and Stage C manual workflow/provider validation are complete. PRs #72–74 installed and corrected the package. Exact-revision uploads, static table/image rendering, Environment rejection before steps, historical/alias deletion, evidence recovery, idempotency and a real late upload during branch removal passed. Both automatic flags remain false. Manual cleanup defaults to dry run; explicit deletion requires one exact branch and retained evidence. Writer lifecycle implementation and macOS/iOS app tests remain prerequisites for Stages D/E.
 
 Main's existing no-bypass deletion/force-push rule is unchanged. A separate PR rule has a sole owner exception to preserve Writer's existing direct-main Go Live path. Owner-authenticated workflow/helper edits are trusted and must continue through reviewed PRs by convention; owner review is not enforced by that rule.
+
+## How the whole setup fits together
+
+Read the [operations guide in Writer](https://github.com/Command-N/Writer/blob/dev/docs/features/preview-automation/OPERATIONS.md) for the plain-English overview, architecture diagram, resource/credential map, manual recovery procedure and failed-run email explanations. The [validation record](https://github.com/Command-N/Writer/blob/dev/docs/features/preview-automation/stage-c-validation.json) keeps exact IDs and coverage limits; [FEAT-077](https://github.com/Command-N/Writer/blob/dev/docs/features/FEAT-077-preview-lifecycle-review.md) controls rollout order. These links use the Writer development branch and require access to that repository.
+
+The initial cleanup parser failures ran no jobs and were fixed in #73. The real deletion test then found Cloudflare’s empty inventory uses zero pages, fixed in #74. Recovery #37723676609 and retry #37723757695 passed. Probe #37723032310 deliberately failed because the preview ref was denied access. Stale-build #37723196474 and active-upload race #37723946858 deliberately detected branch removal. Queued cleanup #37724016775 removed the late deployment and verified all five cumulative hash/alias URLs; all-orphans dry run #37724058138 passed. Expected test failures are not evidence of a production fault.
+
+Final isolated inventory is empty and `preview/reliability-20261008` is absent. Test content was never merged. Production/custom-domain and unrelated article browser text matched their baselines; production Git settings were unchanged. Legacy Git-integrated PR/test previews in the original account remain for separately authorized Stage E cleanup. The live race exercised a late arrival before cleanup inventory; arrivals after a saved plan and provider error variants are covered by fake-provider tests.
 
 ## Workflows and credential boundaries
 
@@ -28,7 +36,7 @@ Only trusted upload/cleanup steps receive the write token. Wrangler 4.135.0 is i
 
 Cleanup evidence is retained 90 days and carried forward by reconciliation. Export unresolved records before retention expires. Missing evidence does not establish that historical URLs are unavailable.
 
-## Stage C disposable validation after approval
+## Stage C disposable validation procedure
 
 Keep both automation flags false. Record production and an unrelated article preview as baselines. Use only `preview/reliability-20261008`, created from the approved main revision with a harmless marker article. Build its completed content commit before creating the ref. Do not merge or change the author's unpublished article PR #70.
 
