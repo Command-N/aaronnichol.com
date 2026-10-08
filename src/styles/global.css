@@ -407,6 +407,14 @@ header, nav, footer, h1, h2, h3, h4,
   vertical-align: bottom;
 }
 
+.entry-body th[align="right"] {
+  text-align: right;
+}
+
+.entry-body th[align="center"] {
+  text-align: center;
+}
+
 .entry-body td {
   padding: var(--space-sm) var(--space-md);
   padding-left: 0;
