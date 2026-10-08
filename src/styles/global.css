@@ -391,13 +391,21 @@ header, nav, footer, h1, h2, h3, h4,
 }
 
 .entry-body table {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   border-collapse: collapse;
   font-size: 0.9em;
   line-height: 1.5;
 }
 
+.entry-body th,
+.entry-body td {
+  overflow-wrap: break-word;
+}
+
 .entry-body th {
+  /* Long headings should wrap rather than dictate a wide column. */
+  max-width: 18ch;
   font-weight: var(--font-weight-semibold);
   text-align: left;
   padding: var(--space-sm) var(--space-md);
@@ -407,20 +415,24 @@ header, nav, footer, h1, h2, h3, h4,
   vertical-align: bottom;
 }
 
-.entry-body th[align="right"] {
+.entry-body th[align="right"],
+.entry-body td[align="right"] {
   text-align: right;
 }
 
-.entry-body th[align="center"] {
+.entry-body th[align="center"],
+.entry-body td[align="center"] {
   text-align: center;
 }
 
 .entry-body td {
+  max-width: 32ch;
+  text-align: left;
   padding: var(--space-sm) var(--space-md);
   padding-left: 0;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-text);
-  white-space: nowrap;
+  white-space: normal;
   vertical-align: top;
 }
 

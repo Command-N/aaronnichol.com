@@ -12,9 +12,8 @@ Over twice the price of Jev for inputs but still remarkably cheap. Native image 
 
 I ran a quick showdown between Jev and the Decisions API. I fed them 2,000 documents and two classification labels:
 
-| | Decisions API | Jev |
+| | Decisions API (input $0.10/MTok) | Jev (input $0.042/MTok) |
 |--|--:|--:|
-| Input / MTok | $0.10 | $0.042 |
 | p50 | 124 ms | 76 ms |
 | p95 | 443 ms | 128 ms |
 | Est. cost | $0.161 | $0.088 |
