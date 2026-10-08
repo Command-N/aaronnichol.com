@@ -95,4 +95,14 @@ class WorkflowPolicyTest < Minitest::Test
       end
     end
   end
+
+  def test_job_environment_does_not_reference_runner_only_contexts
+    # GitHub resolves jobs.<job_id>.env before assigning a runner.
+    # https://docs.github.com/en/actions/reference/workflows-and-actions/contexts
+    workflows.each_value do |workflow|
+      workflow.fetch('jobs').each_value do |job|
+        refute_match /\$\{\{[^}]*\b(runner|steps|job|env)\./, job.fetch('env', {}).to_s
+      end
+    end
+  end
 end
