@@ -26,7 +26,10 @@ function provider(lists, { failDelete = false } = {}) {
       if (failDelete) throw new Error('Lost deletion response');
       return null;
     }
-    if (path.includes('/deployments?')) return page(lists[Math.min(reads++, lists.length - 1)]);
+    if (path.includes('/deployments?')) {
+      const items = lists[Math.min(reads++, lists.length - 1)];
+      return page(items, 1, items.length ? 1 : 0);
+    }
     return { success: true, result: { name: config.project, production_branch: config.reservedBranch } };
   } };
 }
@@ -65,6 +68,17 @@ test('exhaustive pagination retains historical matches and rejects missing or re
   await assert.rejects(inventory({ request: async () => ({ result: [] }) }, '/project'));
   await assert.rejects(inventory({ request: async p => page([deployment()], p.endsWith('page=1') ? 1 : 2, 2) }, '/project'), /changed during pagination/);
   await assert.rejects(inventory({ request: async () => ({ ...page([]), result_info: { ...page([]).result_info, total_count: 1 } }) }, '/project'), /Incomplete/);
+});
+
+test('Cloudflare zero-page empty inventory is valid only with consistent zero counts', async () => {
+  const empty = page([], 1, 0);
+  assert.deepEqual(await inventory({ request: async () => empty }, '/project'), []);
+  for (const invalid of [
+    { ...empty, result_info: { ...empty.result_info, total_count: 1 } },
+    { ...empty, result_info: { ...empty.result_info, count: 1 } },
+    { ...empty, result: [deployment()] },
+    { ...empty, result_info: { ...empty.result_info, page: 2 } },
+  ]) await assert.rejects(inventory({ request: async () => invalid }, '/project'), /Incomplete/);
 });
 
 test('similar branches remain untouched; exact production match aborts', () => {
