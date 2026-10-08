@@ -1,0 +1,16 @@
+name: Writer preview credential isolation probe
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  must-be-rejected:
+    if: github.repository == 'Command-N/aaronnichol.com' && github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/preview/reliability-')
+    environment: writer-previews
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Must never execute outside the permitted main ref
+        shell: bash
+        run: test -z "$PROBE_SECRET"
+        env:
+          PROBE_SECRET: ${{ secrets.CLOUDFLARE_PREVIEW_EDIT_TOKEN }}
