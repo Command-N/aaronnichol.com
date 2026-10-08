@@ -1,0 +1,12 @@
+{
+  "repository": "Command-N/aaronnichol.com",
+  "defaultBranch": "main",
+  "productionAccount": "43140116036dced655d06acfbe13a99f",
+  "previewAccount": "bb89eed3470bf2a12e60d78e10d0b92a",
+  "project": "writer-previews",
+  "reservedBranch": "writer-preview-base",
+  "nodeVersion": "22.16.0",
+  "wranglerVersion": "4.135.0",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
+}

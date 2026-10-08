@@ -1,0 +1,95 @@
+name: Writer preview build
+on:
+  push:
+    branches: ['preview/**']
+  workflow_dispatch:
+    inputs:
+      preview_branch:
+        description: Exact disposable preview branch
+        required: true
+        type: string
+      upload:
+        description: Upload this disposable build (manual main runs only)
+        default: false
+        type: boolean
+permissions:
+  contents: read
+jobs:
+  resolve:
+    if: github.repository == 'Command-N/aaronnichol.com' && ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') || (github.event_name == 'push' && vars.WRITER_PREVIEW_AUTOMATION_ENABLED == 'true'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      branch: ${{ steps.resolve.outputs.branch }}
+      sha: ${{ steps.resolve.outputs.sha }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.16.0'
+      - id: resolve
+        run: node scripts/writer-previews/scripts/preview.mjs resolve-build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_BRANCH: ${{ inputs.preview_branch || github.ref_name }}
+  build:
+    needs: resolve
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ needs.resolve.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.16.0'
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: writer-static-${{ needs.resolve.outputs.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+  manual-upload:
+    needs: [resolve, build]
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.upload
+    environment: writer-previews
+    concurrency:
+      group: writer-preview-project
+      queue: max
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.16.0'
+      - name: Download and validate data artifact
+        run: python3 scripts/writer-previews/scripts/artifacts.py download --config scripts/writer-previews/preview-config.json --destination "$RUNNER_TEMP/writer-static" --run-id "$GITHUB_RUN_ID" --sha "$PREVIEW_SHA"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_SHA: ${{ needs.resolve.outputs.sha }}
+      - name: Install pinned upload tooling without credentials
+        run: npm install --prefix "$RUNNER_TEMP/writer-tools" --no-save --ignore-scripts --no-audit --no-fund wrangler@4.135.0
+      - name: Upload static files after rechecking branch and commit
+        run: node scripts/writer-previews/scripts/preview.mjs upload
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_BRANCH: ${{ needs.resolve.outputs.branch }}
+          PREVIEW_SHA: ${{ needs.resolve.outputs.sha }}
+          STATIC_DIRECTORY: ${{ runner.temp }}/writer-static
+          CLOUDFLARE_PREVIEW_ACCOUNT_ID: ${{ vars.CLOUDFLARE_PREVIEW_ACCOUNT_ID }}
+          CLOUDFLARE_PREVIEW_PROJECT: ${{ vars.CLOUDFLARE_PREVIEW_PROJECT }}
+          CLOUDFLARE_PREVIEW_EDIT_TOKEN: ${{ secrets.CLOUDFLARE_PREVIEW_EDIT_TOKEN }}

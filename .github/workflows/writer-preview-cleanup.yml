@@ -1,0 +1,64 @@
+name: Writer preview cleanup
+on:
+  delete:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      preview_branch:
+        description: Exact absent preview branch (empty reconciles all orphaned previews)
+        type: string
+      delete_previews:
+        description: Delete recorded disposable targets; defaults to dry run
+        default: false
+        type: boolean
+permissions:
+  contents: read
+  actions: read
+jobs:
+  cleanup:
+    if: github.repository == 'Command-N/aaronnichol.com' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || (vars.WRITER_PREVIEW_AUTOMATION_ENABLED == 'true' && (github.event_name == 'schedule' || (github.event.ref_type == 'branch' && startsWith(github.event.ref, 'preview/')))))
+    environment: writer-previews
+    concurrency:
+      group: writer-preview-project
+      queue: max
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PREVIEW_BRANCH: ${{ inputs.preview_branch }}
+      PLAN_DIRECTORY: ${{ runner.temp }}/writer-cleanup-plan
+      HISTORY_DIRECTORY: ${{ runner.temp }}/writer-cleanup-history
+      CLOUDFLARE_PREVIEW_ACCOUNT_ID: ${{ vars.CLOUDFLARE_PREVIEW_ACCOUNT_ID }}
+      CLOUDFLARE_PREVIEW_PROJECT: ${{ vars.CLOUDFLARE_PREVIEW_PROJECT }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.16.0'
+      - name: Recover previous URL inventories from trusted cleanup runs
+        run: python3 scripts/writer-previews/scripts/artifacts.py history --config scripts/writer-previews/preview-config.json --destination "$HISTORY_DIRECTORY"
+      - id: plan
+        name: Record exact absent-branch inventory before mutation
+        run: node scripts/writer-previews/scripts/preview.mjs plan-cleanup
+        env:
+          CLOUDFLARE_PREVIEW_EDIT_TOKEN: ${{ secrets.CLOUDFLARE_PREVIEW_EDIT_TOKEN }}
+          DELETE_PREVIEWS: ${{ (github.event_name == 'workflow_dispatch' && inputs.delete_previews) || (github.event_name != 'workflow_dispatch' && vars.WRITER_PREVIEW_DELETION_ENABLED == 'true') }}
+      - name: Persist recovery evidence before deleting anything
+        if: steps.plan.outputs.planned == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: writer-cleanup-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/writer-cleanup-plan/evidence/*.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Dry run or apply persisted plan and verify absence
+        if: steps.plan.outputs.planned == 'true'
+        run: node scripts/writer-previews/scripts/preview.mjs apply-cleanup
+        env:
+          CLOUDFLARE_PREVIEW_EDIT_TOKEN: ${{ secrets.CLOUDFLARE_PREVIEW_EDIT_TOKEN }}
+          DELETE_PREVIEWS: ${{ (github.event_name == 'workflow_dispatch' && inputs.delete_previews) || (github.event_name != 'workflow_dispatch' && vars.WRITER_PREVIEW_DELETION_ENABLED == 'true') }}
