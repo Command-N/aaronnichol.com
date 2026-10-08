@@ -28,8 +28,6 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       PREVIEW_BRANCH: ${{ inputs.preview_branch }}
-      PLAN_DIRECTORY: ${{ runner.temp }}/writer-cleanup-plan
-      HISTORY_DIRECTORY: ${{ runner.temp }}/writer-cleanup-history
       CLOUDFLARE_PREVIEW_ACCOUNT_ID: ${{ vars.CLOUDFLARE_PREVIEW_ACCOUNT_ID }}
       CLOUDFLARE_PREVIEW_PROJECT: ${{ vars.CLOUDFLARE_PREVIEW_PROJECT }}
     steps:
@@ -40,6 +38,9 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22.16.0'
+      - name: Configure temporary evidence paths on the assigned runner
+        run: |
+          printf 'PLAN_DIRECTORY=%s/writer-cleanup-plan\nHISTORY_DIRECTORY=%s/writer-cleanup-history\n' "$RUNNER_TEMP" "$RUNNER_TEMP" >> "$GITHUB_ENV"
       - name: Recover previous URL inventories from trusted cleanup runs
         run: python3 scripts/writer-previews/scripts/artifacts.py history --config scripts/writer-previews/preview-config.json --destination "$HISTORY_DIRECTORY"
       - id: plan
