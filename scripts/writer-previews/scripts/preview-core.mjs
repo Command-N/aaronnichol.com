@@ -87,7 +87,8 @@ export async function inventory(cf, path) {
     const data = await cf.request(`${path}/deployments?env=preview&per_page=25&page=${page}`);
     const pages = data.result_info?.total_pages;
     const count = data.result_info?.total_count;
-    if (!Array.isArray(data.result) || !Number.isInteger(pages) || pages < 1 || pages > 1000 ||
+    if (!Array.isArray(data.result) || !Number.isInteger(pages) || pages < 0 || pages > 1000 ||
+        (pages === 0 && (page !== 1 || count !== 0 || data.result.length !== 0)) ||
         data.result_info.page !== page || data.result_info.count !== data.result.length ||
         !Number.isInteger(count) || count < 0 || (expectedCount !== undefined && count !== expectedCount)) {
       throw new Error('Incomplete or malformed deployment inventory');
