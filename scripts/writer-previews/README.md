@@ -10,10 +10,10 @@ This package builds static preview content without Cloudflare credentials, uploa
 - Reserved production branch: `writer-preview-base`; never upload this branch.
 - GitHub Environment: `writer-previews`, selected branches/tags policy permitting only branch `main`.
 - Environment variables: `CLOUDFLARE_PREVIEW_ACCOUNT_ID` and `CLOUDFLARE_PREVIEW_PROJECT`, matching `preview-config.json`.
-- Environment secret: `CLOUDFLARE_PREVIEW_EDIT_TOKEN`, a user token with only Account → Cloudflare Pages → Edit for the specific preview account. Secret metadata confirms it is saved; account scope still requires author confirmation because MCP cannot read token policies.
+- Environment secret: `CLOUDFLARE_PREVIEW_EDIT_TOKEN`, a user token with only Account → Cloudflare Pages → Edit for the specific preview account. GitHub metadata confirms it is saved; the author confirmed that exact scope. MCP cannot independently read token policies and no secret value was retrieved.
 - Repository variables: `WRITER_PREVIEW_AUTOMATION_ENABLED=false`, `WRITER_PREVIEW_DELETION_ENABLED=false`.
 
-Stage B resources/ref restrictions are verified. Token scope and installation approval remain gates before Stage C. Runtime execution, Environment denial and provider deletion have not been demonstrated. Merging registers manual workflows; automatic jobs remain disabled. Manual cleanup defaults to dry run. Manual deletion requires one explicit branch and persists recovery evidence before mutation.
+Stage B resources/ref restrictions and saved-secret metadata are verified; token scope is confirmed by the author. Stage C installation approval remains pending. Runtime execution, Environment denial and provider deletion have not been demonstrated. Merging registers manual workflows; automatic jobs remain disabled. Manual cleanup defaults to dry run. Manual deletion requires one explicit branch and persists recovery evidence before mutation.
 
 Main's existing no-bypass deletion/force-push rule is unchanged. A separate PR rule has a sole owner exception to preserve Writer's existing direct-main Go Live path. Owner-authenticated workflow/helper edits are trusted and must continue through reviewed PRs by convention; owner review is not enforced by that rule.
 
