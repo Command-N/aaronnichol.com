@@ -37,7 +37,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '22.16.0'
+          node-version: '22.23.4'
       - name: Configure temporary evidence paths on the assigned runner
         run: |
           printf 'PLAN_DIRECTORY=%s/writer-cleanup-plan\nHISTORY_DIRECTORY=%s/writer-cleanup-history\n' "$RUNNER_TEMP" "$RUNNER_TEMP" >> "$GITHUB_ENV"

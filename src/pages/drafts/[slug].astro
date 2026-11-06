@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const drafts = await getCollection('drafts');
@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 }
 
 const { draft } = Astro.props;
-const { Content } = await draft.render();
+const { Content } = await render(draft);
 const isLink = !!draft.data.url;
 const dateStr = draft.data.date.toLocaleDateString('en-AU', {
   year: 'numeric', month: 'long', day: 'numeric',

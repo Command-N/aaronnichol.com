@@ -29,7 +29,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '22.16.0'
+          node-version: '22.23.4'
       - id: resolve
         run: node scripts/writer-previews/scripts/preview.mjs resolve-build
         env:
@@ -46,7 +46,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '22.16.0'
+          node-version: '22.23.4'
       - run: npm ci --no-audit --no-fund
       - run: npm run build
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -75,7 +75,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '22.16.0'
+          node-version: '22.23.4'
       - name: Download and validate data artifact
         run: python3 scripts/writer-previews/scripts/artifacts.py download --config scripts/writer-previews/preview-config.json --destination "$RUNNER_TEMP/writer-static" --run-id "$GITHUB_RUN_ID" --sha "$PREVIEW_SHA"
         env:
