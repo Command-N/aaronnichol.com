@@ -1,6 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -34,7 +34,7 @@ export async function getStaticPaths() {
 }
 
 const { type, entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const dateStr = entry.data.date.toLocaleDateString('en-AU', {
   year: 'numeric',
   month: 'long',
