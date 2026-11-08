@@ -12,6 +12,10 @@ on:
         description: Upload this disposable build (manual main runs only)
         default: false
         type: boolean
+      d10_late_upload:
+        description: Reviewed exact-C late-upload test only; wait 120 seconds after final ref guard
+        default: false
+        type: boolean
 permissions:
   contents: read
 jobs:
@@ -89,6 +93,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PREVIEW_BRANCH: ${{ needs.resolve.outputs.branch }}
           PREVIEW_SHA: ${{ needs.resolve.outputs.sha }}
+          WRITER_D10_LATE_UPLOAD: ${{ inputs.d10_late_upload }}
           STATIC_DIRECTORY: ${{ runner.temp }}/writer-static
           CLOUDFLARE_PREVIEW_ACCOUNT_ID: ${{ vars.CLOUDFLARE_PREVIEW_ACCOUNT_ID }}
           CLOUDFLARE_PREVIEW_PROJECT: ${{ vars.CLOUDFLARE_PREVIEW_PROJECT }}
