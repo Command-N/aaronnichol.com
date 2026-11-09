@@ -56,6 +56,49 @@ async function history() {
   return records;
 }
 
+// Temporary, separately approved D10 fault injection; never enabled by automatic runs.
+async function waitForD10Removal(s) {
+  if (env.GITHUB_EVENT_NAME !== 'workflow_dispatch' ||
+      env.GITHUB_REF !== 'refs/heads/main' ||
+      config.repository !== 'Command-N/aaronnichol.com' ||
+      config.previewAccount !== 'bb89eed3470bf2a12e60d78e10d0b92a' ||
+      config.project !== 'writer-previews' ||
+      s.branch !== 'preview/538db5b6-be96-42c9-aefb-3bcbb506ad9b-914f02fa-6d48-4f9a-a4f8-ed468b069441' || s.sha !== 'a4f013ed9ab694c1c2290a03e626484da8c88810') {
+    throw new Error('D10 wait requires the reviewed disposable revision');
+  }
+  const log = checkpoint => console.log(JSON.stringify({ checkpoint,
+    at: new Date().toISOString(), branch: s.branch, sha: s.sha }));
+  const timeoutError = () => new Error('D10 removal was not confirmed within 600 seconds; upload refused');
+  const deadline = performance.now() + 600_000;
+  let stopped = false, timer;
+  log('D10-waiting-for-Writer-remove');
+  try {
+    await Promise.race([
+      (async () => {
+        while (!stopped) {
+          const head = await branchHead(github, config, s.branch);
+          if (stopped || performance.now() >= deadline) throw timeoutError();
+          if (head === null) {
+            log('D10-removal-observed');
+            return;
+          }
+          if (head !== s.sha) throw new Error('D10 revision changed; upload refused');
+          await new Promise(accept => setTimeout(accept,
+            Math.min(2_000, Math.max(0, deadline - performance.now()))));
+        }
+        throw timeoutError();
+      })(),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => { stopped = true; reject(timeoutError()); }, 600_000);
+      }),
+    ]);
+    log('D10-release-to-upload');
+  } finally {
+    stopped = true;
+    clearTimeout(timer);
+  }
+}
+
 if (command === 'resolve-build') {
   const branch = branchName(env.PREVIEW_BRANCH);
   const sha = await branchHead(github, config, branch);
@@ -72,6 +115,7 @@ if (command === 'resolve-build') {
   const directory = resolve(env.STATIC_DIRECTORY);
   await validateStaticDirectory(directory);
   if (await branchHead(github, config, s.branch) !== s.sha) throw new Error('Preview artifact superseded or branch removed');
+  if (env.WRITER_D10_WAIT_FOR_REMOVE === 'true') await waitForD10Removal(s);
   // The runner tooling directory contains no artifact configuration. Wrangler only sees static files.
   const executable = resolve(env.RUNNER_TEMP, 'writer-tools/node_modules/.bin/wrangler');
   await new Promise((accept, reject) => {

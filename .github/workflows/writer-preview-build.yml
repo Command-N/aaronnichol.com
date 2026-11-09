@@ -12,6 +12,10 @@ on:
         description: Upload this disposable build (manual main runs only)
         default: false
         type: boolean
+      d10_wait_for_remove:
+        description: Reviewed exact-C late-upload test only; await Writer Remove for at most 600 seconds
+        default: false
+        type: boolean
 permissions:
   contents: read
 jobs:
@@ -89,6 +93,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PREVIEW_BRANCH: ${{ needs.resolve.outputs.branch }}
           PREVIEW_SHA: ${{ needs.resolve.outputs.sha }}
+          WRITER_D10_WAIT_FOR_REMOVE: ${{ inputs.d10_wait_for_remove }}
           STATIC_DIRECTORY: ${{ runner.temp }}/writer-static
           CLOUDFLARE_PREVIEW_ACCOUNT_ID: ${{ vars.CLOUDFLARE_PREVIEW_ACCOUNT_ID }}
           CLOUDFLARE_PREVIEW_PROJECT: ${{ vars.CLOUDFLARE_PREVIEW_PROJECT }}
