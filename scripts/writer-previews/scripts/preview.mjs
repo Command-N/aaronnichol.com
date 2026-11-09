@@ -72,6 +72,24 @@ if (command === 'resolve-build') {
   const directory = resolve(env.STATIC_DIRECTORY);
   await validateStaticDirectory(directory);
   if (await branchHead(github, config, s.branch) !== s.sha) throw new Error('Preview artifact superseded or branch removed');
+  // Explicitly reviewed D10 fault injection: widen only this disposable upload race.
+  // Both normal ref guards remain in place, before and after the real upload.
+  if (env.WRITER_D10_LATE_UPLOAD === 'true') {
+    if (env.GITHUB_EVENT_NAME !== 'workflow_dispatch' ||
+        env.GITHUB_REF !== 'refs/heads/main' ||
+        config.repository !== 'Command-N/aaronnichol.com' ||
+        config.previewAccount !== 'bb89eed3470bf2a12e60d78e10d0b92a' ||
+        config.project !== 'writer-previews' ||
+        s.branch !== 'preview/538db5b6-be96-42c9-aefb-3bcbb506ad9b-9f78fb79-b916-4de7-b333-d7890251873b' ||
+        s.sha !== 'e7abe39b7217abd9c00f842d701c45ae5c462ca7') {
+      throw new Error('D10 barrier requires the reviewed disposable revision');
+    }
+    console.log(JSON.stringify({ checkpoint: 'D10-after-final-ref-guard',
+      at: new Date().toISOString(), branch: s.branch, sha: s.sha, waitSeconds: 120 }));
+    await new Promise(accept => setTimeout(accept, 120_000));
+    console.log(JSON.stringify({ checkpoint: 'D10-release-to-upload',
+      at: new Date().toISOString(), branch: s.branch, sha: s.sha }));
+  }
   // The runner tooling directory contains no artifact configuration. Wrangler only sees static files.
   const executable = resolve(env.RUNNER_TEMP, 'writer-tools/node_modules/.bin/wrangler');
   await new Promise((accept, reject) => {
