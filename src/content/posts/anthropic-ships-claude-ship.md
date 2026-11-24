@@ -9,7 +9,7 @@ Anthropic:
 
 I was half-expecting a Claude-themed cruise liner based on the name, so I was a tad disappointed to learn it's just a bundle of agents, alas.
 
-In a nutshell, Claude Code already writes the code; Claud Ship reviews it, fixes it, and approves it to ship. Humans set the direction and the rules.
+In a nutshell, Claude Code already writes the code; Claude Ship reviews it, fixes it, and approves it to ship. Humans set the direction and the rules.
 
 I'm sure some will read this announcement and wince. They might say, "Our skills are going to atrophy" or "nobody's going to know what's been shipped" or "we're putting too much faith and trust in these models" or "we're making ourselves too dependent on AI." All of that may be true, but I prefer to see the glass as half full.
 
@@ -26,5 +26,3 @@ One catch is the cost:
 I'd expect a lot of CIO/CFO types to be nervous about rolling this out across an organisation, because it could quickly become a big, uncontrolled cost driver.
 
 Once people get used to the new desire path, they won't want to go back to the old one. Instead, they'll use the time this gives them back to tackle more ambitious goals and generate even more PRs for Claude Ship to work on. That's great for Anthropic, not necessarily for the customer's bottom line.
-
-Via [9to5Mac](https://9to5mac.com/2026/11/23/anthropic-launches-new-claude-ship-feature-for-builders/)
