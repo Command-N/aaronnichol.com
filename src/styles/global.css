@@ -191,6 +191,14 @@ header, nav, footer, h1, h2, h3, h4,
   text-decoration: none;
 }
 
+/* Link post titles point to another site, so underline them */
+.entry-link .entry-title a:not(.entry-permalink),
+.post-header h1 a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
 .entry-post .entry-title a:not(.entry-permalink):hover,
 .post-header h1 a:hover {
   background-color: var(--color-highlight);
