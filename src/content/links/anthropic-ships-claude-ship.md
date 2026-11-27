@@ -1,6 +1,7 @@
 ---
 title: "Anthropic Ships Claude Ship"
 date: 2026-11-24
+url: "https://claude.com/resources/articles/introducing-claude-ship"
 ---
 
 Anthropic:
